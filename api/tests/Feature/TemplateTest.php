@@ -145,6 +145,22 @@ class TemplateTest extends TestCase
             ]);
     }
 
+    public function test_not_unique_name()
+    {
+        $data = $this->getValidRgbData();
+        $data['name'] = 'template 1';
+        $this->json('post', 'api/templates', $data);
+
+        $this->json('post', 'api/templates', $data)
+            ->assertStatus(400)
+            ->assertJson([ "error" => [
+                    "name" => [
+                        "The name has already been taken."
+                    ]
+                ]
+            ]);
+    }
+
     public function test_valid_hex_template()
     {
         $data = $this->getValidHexData();
