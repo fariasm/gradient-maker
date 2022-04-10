@@ -12,7 +12,7 @@ class ColorFormatTest extends TestCase
     public function test_valid_color_formats()
     {
         $this->json('get', 'api/v1/color-formats')
-            ->assertStatus(200)
+            ->assertStatus(400)
             ->assertJson(ColorFormat::asArray());
     }
 }
