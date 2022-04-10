@@ -22,10 +22,17 @@ class TemplateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $templateQuery = Template::orderBy('name');
+        if($request->has('name'))
+        {
+            $templateQuery = $templateQuery->where('name', 'like', '%'.$request->name.'%');
+        }
+        $templates = $templateQuery->get();
+        return $this->successResponse($templates);
     }
+
     /**
      * Store a newly created resource in storage.
      *

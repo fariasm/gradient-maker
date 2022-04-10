@@ -191,6 +191,35 @@ class TemplateTest extends TestCase
             ]);
     }
 
+    public function test_get_all_templates()
+    {
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('get', 'api/templates')
+            ->assertStatus(200)
+            ->assertJsonCount(4);
+    }
+
+    public function test_filter_templates_by_name()
+    {
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $template1 = $this->getValidHexData();
+        $template1['name'] = 'search this template1';
+        $this->json('post', 'api/templates', $template1);
+        $template2 = $this->getValidRgbData();
+        $template2['name'] = 'search this template2';
+        $this->json('post', 'api/templates', $template2);
+
+        $this->json('get', 'api/templates?name=search')
+            ->assertStatus(200)
+            ->assertJsonCount(2);
+    }
+
     private function getValidHexData()
     {
         return [

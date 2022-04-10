@@ -8,9 +8,6 @@ trait ApiResponser
 {
     public function successResponse($data = [], $code = Response::HTTP_OK)
     {
-        if(!is_array($data)) {
-            $data = array('message' => $data);
-        }
         return response($data, $code)->header('Content-Type', 'application/json');
     }
 
