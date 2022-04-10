@@ -20,7 +20,8 @@ final class GradientDirection extends Enum
     const TopRight = 'Top right';
     const Right = 'Right';
     const BottomRight = 'Bottom right';
-    const Bottom = 'Bottom left';
+    const Bottom = 'Bottom';
+    const BottomLeft = 'Bottom left';
     const Left = 'Left';
     const TopLeft = 'Top left';
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Enums\GradientStyle;
+use App\Http\Controllers\Controller;
+use App\Enums\ColorFormat;
 use App\Traits\ApiResponser;
 
-class StyleController extends Controller
+class ColorFormatController extends Controller
 {
     use ApiResponser;
 
@@ -16,6 +17,6 @@ class StyleController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(GradientStyle::asArray());
+        return $this->successResponse(ColorFormat::asArray());
     }
 }
