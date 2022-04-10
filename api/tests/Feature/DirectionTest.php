@@ -13,7 +13,7 @@ class DirectionTest extends TestCase
 {
     public function test_valid_directions()
     {
-        $this->json('get', 'api/directions')
+        $this->json('get', 'api/v1/directions')
             ->assertStatus(200)
             ->assertJson(GradientDirection::asArray());
     }

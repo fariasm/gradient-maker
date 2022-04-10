@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('styles', [StyleController::class, 'index']);
-Route::get('directions', [DirectionController::class, 'index']);
-Route::get('color-formats', [ColorFormatController::class, 'index']);
-Route::post('templates', [TemplateController::class, 'store']);
-Route::get('templates', [TemplateController::class, 'index']);
+Route::group([
+    'prefix' => 'v1'
+], function() {
+    Route::get('styles', [StyleController::class, 'index']);
+    Route::get('directions', [DirectionController::class, 'index']);
+    Route::get('color-formats', [ColorFormatController::class, 'index']);
+    Route::post('templates', [TemplateController::class, 'store']);
+    Route::get('templates', [TemplateController::class, 'index']);
+});

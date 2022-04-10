@@ -11,10 +11,12 @@ use Tests\TestCase;
 class TemplateTest extends TestCase
 {
     use RefreshDatabase;
+
+    private $templatesUrl = 'api/v1/templates';
     
     public function test_required_data()
     {
-        $this->json('post', 'api/templates')
+        $this->json('post', $this->templatesUrl)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "name" => [
@@ -43,7 +45,7 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidHexData();
         $data['name'] = 'a';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "name" => [
@@ -57,7 +59,7 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidHexData();
         $data['name'] = str_repeat('a', 51);
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "name" => [
@@ -71,7 +73,7 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidHexData();
         $data['style'] = 'invalid style';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "style" => [
@@ -85,7 +87,7 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidHexData();
         $data['direction'] = 'invalid direction';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "direction" => [
@@ -99,7 +101,7 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidHexData();
         $data['color_format'] = 'invalid color_format';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "color_format" => [
@@ -114,7 +116,7 @@ class TemplateTest extends TestCase
         $data = $this->getValidHexData();
         $data['color_from'] = 'invalid color';
         $data['color_to'] = 'invalid color';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "color_from" => [
@@ -132,7 +134,7 @@ class TemplateTest extends TestCase
         $data = $this->getValidRgbData();
         $data['color_from'] = 'invalid color';
         $data['color_to'] = 'invalid color';
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "color_from" => [
@@ -149,9 +151,9 @@ class TemplateTest extends TestCase
     {
         $data = $this->getValidRgbData();
         $data['name'] = 'template 1';
-        $this->json('post', 'api/templates', $data);
+        $this->json('post', $this->templatesUrl, $data);
 
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(400)
             ->assertJson([ "error" => [
                     "name" => [
@@ -164,7 +166,7 @@ class TemplateTest extends TestCase
     public function test_valid_hex_template()
     {
         $data = $this->getValidHexData();
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'id',
@@ -179,7 +181,7 @@ class TemplateTest extends TestCase
     public function test_valid_rgb_template()
     {
         $data = $this->getValidRgbData();
-        $this->json('post', 'api/templates', $data)
+        $this->json('post', $this->templatesUrl, $data)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'id',
@@ -193,12 +195,12 @@ class TemplateTest extends TestCase
 
     public function test_get_all_templates()
     {
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
 
-        $response = $this->json('get', 'api/templates');
+        $response = $this->json('get', $this->templatesUrl);
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
         $this->assertTrue(count($response['data']) == 4);
@@ -206,20 +208,20 @@ class TemplateTest extends TestCase
 
     public function test_filter_templates_by_name()
     {
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
 
         $template1 = $this->getValidHexData();
         $template1['name'] = 'search this template1';
-        $this->json('post', 'api/templates', $template1);
+        $this->json('post', $this->templatesUrl, $template1);
 
         $template2 = $this->getValidRgbData();
         $template2['name'] = 'search this template2';
-        $this->json('post', 'api/templates', $template2);
+        $this->json('post', $this->templatesUrl, $template2);
 
-        $response = $this->json('get', 'api/templates?name=search');
+        $response = $this->json('get', $this->templatesUrl.'?name=search');
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
         $this->assertTrue(count($response['data']) == 2);
@@ -232,17 +234,17 @@ class TemplateTest extends TestCase
 
         $template1 = $this->getValidHexData();
         $template1['style'] = $linearKey;
-        $this->json('post', 'api/templates', $template1);
+        $this->json('post', $this->templatesUrl, $template1);
 
         $template2 = $this->getValidHexData();
         $template2['style'] = $linearKey;
-        $this->json('post', 'api/templates', $template2);
+        $this->json('post', $this->templatesUrl, $template2);
 
         $template3 = $this->getValidHexData();
         $template3['style'] = $radialKey;
-        $this->json('post', 'api/templates', $template3);
+        $this->json('post', $this->templatesUrl, $template3);
         
-        $response = $this->json('get', 'api/templates?style='.$linearKey);
+        $response = $this->json('get', $this->templatesUrl.'?style='.$linearKey);
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
         $this->assertTrue(count($response['data']) == 2);
@@ -255,17 +257,17 @@ class TemplateTest extends TestCase
 
         $template1 = $this->getValidHexData();
         $template1['direction'] = $topGradientKey;
-        $this->json('post', 'api/templates', $template1)->assertStatus(200);
+        $this->json('post', $this->templatesUrl, $template1)->assertStatus(200);
 
         $template2 = $this->getValidHexData();
         $template2['direction'] = $topGradientKey;
-        $this->json('post', 'api/templates', $template2)->assertStatus(200);
+        $this->json('post', $this->templatesUrl, $template2)->assertStatus(200);
 
         $template3 = $this->getValidHexData();
         $template3['direction'] = $bottomLeftGradientKey;
-        $this->json('post', 'api/templates', $template3)->assertStatus(200);
+        $this->json('post', $this->templatesUrl, $template3)->assertStatus(200);
         
-        $response = $this->json('get', 'api/templates?direction='.$bottomLeftGradientKey);
+        $response = $this->json('get', $this->templatesUrl.'?direction='.$bottomLeftGradientKey);
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
         $this->assertTrue(count($response['data']) == 1);
@@ -273,12 +275,12 @@ class TemplateTest extends TestCase
 
     public function test_get_paginated_templates_with_page_size()
     {
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidHexData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
-        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidHexData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
+        $this->json('post', $this->templatesUrl, $this->getValidRgbData());
 
-        $response = $this->json('get', 'api/templates?page=2&page_size=3');
+        $response = $this->json('get', $this->templatesUrl.'?page=2&page_size=3');
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
         $this->assertTrue(count($response['data']) == 1);
