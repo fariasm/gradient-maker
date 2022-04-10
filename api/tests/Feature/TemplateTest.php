@@ -208,9 +208,11 @@ class TemplateTest extends TestCase
         $this->json('post', 'api/templates', $this->getValidHexData());
         $this->json('post', 'api/templates', $this->getValidRgbData());
         $this->json('post', 'api/templates', $this->getValidRgbData());
+
         $template1 = $this->getValidHexData();
         $template1['name'] = 'search this template1';
         $this->json('post', 'api/templates', $template1);
+        
         $template2 = $this->getValidRgbData();
         $template2['name'] = 'search this template2';
         $this->json('post', 'api/templates', $template2);
@@ -220,15 +222,59 @@ class TemplateTest extends TestCase
             ->assertJsonCount(2);
     }
 
+    public function test_filter_templates_by_style()
+    {
+        $linearKey = GradientStyle::getKey(GradientStyle::Linear);
+        $radialKey = GradientStyle::getKey(GradientStyle::Radial);
+
+        $template1 = $this->getValidHexData();
+        $template1['style'] = $linearKey;
+        $this->json('post', 'api/templates', $template1);
+
+        $template2 = $this->getValidHexData();
+        $template2['style'] = $linearKey;
+        $this->json('post', 'api/templates', $template2);
+
+        $template3 = $this->getValidHexData();
+        $template3['style'] = $radialKey;
+        $this->json('post', 'api/templates', $template3);
+        
+        $this->json('get', 'api/templates?style='.$linearKey)
+            ->assertStatus(200)
+            ->assertJsonCount(2);
+    }
+
+    public function test_filter_templates_by_direction()
+    {
+        $topGradientKey = GradientDirection::getKey(GradientDirection::TopLeft);
+        $bottomLeftGradientKey = GradientDirection::getKey(GradientDirection::Top);
+
+        $template1 = $this->getValidHexData();
+        $template1['direction'] = $topGradientKey;
+        $this->json('post', 'api/templates', $template1)->assertStatus(200);
+
+        $template2 = $this->getValidHexData();
+        $template2['direction'] = $topGradientKey;
+        $this->json('post', 'api/templates', $template2)->assertStatus(200);
+
+        $template3 = $this->getValidHexData();
+        $template3['direction'] = $bottomLeftGradientKey;
+        $this->json('post', 'api/templates', $template3)->assertStatus(200);
+        
+        $this->json('get', 'api/templates?direction='.$bottomLeftGradientKey)
+            ->assertStatus(200)
+            ->assertJsonCount(1);
+    }
+
     private function getValidHexData()
     {
         return [
             'name' => 'Template '.rand(0, 99999999999999),
-            'style' => GradientStyle::Linear(),
-            'direction' => GradientDirection::Bottom(),
+            'style' => GradientStyle::getKey(GradientStyle::Linear),
+            'direction' => GradientDirection::getKey(GradientDirection::TopLeft),
             'color_from' => '#118822',
             'color_to' => '#091929',
-            'color_format' => ColorFormat::Hex()
+            'color_format' => ColorFormat::getKey(ColorFormat::Hex)
         ];
     }
 
@@ -236,11 +282,11 @@ class TemplateTest extends TestCase
     {
         return [
             'name' => 'Template '.rand(0, 99999999999999),
-            'style' => GradientStyle::Linear(),
-            'direction' => GradientDirection::Bottom(),
+            'style' => GradientStyle::getKey(GradientStyle::Linear),
+            'direction' => GradientDirection::getKey(GradientDirection::TopLeft),
             'color_from' => 'rgb(255, 153, 51)',
             'color_to' => 'rgb(51, 255, 51)',
-            'color_format' => ColorFormat::Rgb()
+            'color_format' => ColorFormat::getKey(ColorFormat::Rgb)
         ];
     }
 }

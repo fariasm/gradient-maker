@@ -29,6 +29,14 @@ class TemplateController extends Controller
         {
             $templateQuery = $templateQuery->where('name', 'like', '%'.$request->name.'%');
         }
+        if($request->has('style'))
+        {
+            $templateQuery = $templateQuery->where('style', $request->style);
+        }
+        if($request->has('direction'))
+        {
+            $templateQuery = $templateQuery->where('direction', $request->direction);
+        }
         $templates = $templateQuery->get();
         return $this->successResponse($templates);
     }
