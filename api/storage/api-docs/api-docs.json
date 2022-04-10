@@ -1,0 +1,279 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gradient Maker - API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/v1/"
+        }
+    ],
+    "paths": {
+        "/color-formats": {
+            "get": {
+                "tags": [
+                    "Color formats"
+                ],
+                "description": "Returns list of projects",
+                "operationId": "getColors",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/directions": {
+            "get": {
+                "tags": [
+                    "Gradient directions"
+                ],
+                "description": "Returns list of gradient directions",
+                "operationId": "getGradientDirections",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/styles": {
+            "get": {
+                "tags": [
+                    "Gradient styles"
+                ],
+                "description": "Returns list of gradient styles",
+                "operationId": "getGradientStyles",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/templates": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "description": "Returns list of templates",
+                "operationId": "getTemplates",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Template name"
+                    },
+                    {
+                        "name": "style",
+                        "in": "path",
+                        "description": "Template style",
+                        "schema": {
+                            "type": "GradientStyle"
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "description": "Template direction",
+                        "schema": {
+                            "type": "GradientDirection"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Pagination page number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "path",
+                        "description": "Pagination page size",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "style": {
+                                                        "type": "GradientStyle"
+                                                    },
+                                                    "direction": {
+                                                        "type": "GradientDirection"
+                                                    },
+                                                    "color_from": {
+                                                        "type": "string"
+                                                    },
+                                                    "color_to": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "first_page_url": {
+                                            "type": "string"
+                                        },
+                                        "from": {
+                                            "type": "integer"
+                                        },
+                                        "last_page": {
+                                            "type": "integer"
+                                        },
+                                        "last_page_url": {
+                                            "type": "string"
+                                        },
+                                        "links": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "url": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "active": {
+                                                        "type": "boolean"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "next_page_url": {
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "type": "string"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string"
+                                        },
+                                        "to": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Templates"
+                ],
+                "description": "Creates new template",
+                "operationId": "createTemplates",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "style",
+                                    "direction",
+                                    "color_from",
+                                    "color_to",
+                                    "color_format"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Template 1"
+                                    },
+                                    "style": {
+                                        "type": "GradientStyle",
+                                        "example": "Linear"
+                                    },
+                                    "direction": {
+                                        "type": "GradientDirection",
+                                        "example": "Top"
+                                    },
+                                    "color_from": {
+                                        "type": "string"
+                                    },
+                                    "color_to": {
+                                        "type": "string"
+                                    },
+                                    "color_format": {
+                                        "type": "ColorFormat",
+                                        "example": "Rgb"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Invalid data."
+                    },
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "style": {
+                                            "type": "GradientStyle"
+                                        },
+                                        "direction": {
+                                            "type": "GradientDirection"
+                                        },
+                                        "color_from": {
+                                            "type": "string"
+                                        },
+                                        "color_to": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

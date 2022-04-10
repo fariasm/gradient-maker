@@ -15,6 +15,18 @@ class ColorFormatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/color-formats",
+     *      operationId="getColors",
+     *      tags={"Color formats"},
+     *      description="Returns list of projects",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     *     )
+     */
     public function index()
     {
         return $this->successResponse(ColorFormat::asArray());

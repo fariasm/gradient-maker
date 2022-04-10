@@ -25,6 +25,85 @@ class TemplateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/templates",
+     *      operationId="getTemplates",
+     *      tags={"Templates"},
+     *      description="Returns list of templates",
+     *      @OA\Parameter(
+     *          name="name",
+     *          in="path",
+     *          description="Template name"
+     *      ),
+     *      @OA\Parameter(
+     *          name="style",
+     *          description="Template style",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="GradientStyle"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="direction",
+     *          description="Template direction",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="GradientDirection"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Pagination page number",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="page_size",
+     *          description="Pagination page size",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="current_page", type="integer"),
+     *              @OA\Property(property="data", type="array",
+     *                  @OA\Items(
+     *                      @OA\Property(property="id", type="integer"),
+     *                      @OA\Property(property="name", type="string"),
+     *                      @OA\Property(property="style", type="GradientStyle"),
+     *                      @OA\Property(property="direction", type="GradientDirection"),
+     *                      @OA\Property(property="color_from", type="string"),
+     *                      @OA\Property(property="color_to", type="string")
+     *                  ),
+     *              ),
+     *              @OA\Property(property="first_page_url", type="string"),
+     *              @OA\Property(property="from", type="integer"),
+     *              @OA\Property(property="last_page", type="integer"),
+     *              @OA\Property(property="last_page_url", type="string"),
+     *              @OA\Property(property="links", type="array",
+     *                  @OA\Items(
+     *                      @OA\Property(property="url", type="string"),
+     *                      @OA\Property(property="label", type="string"),
+     *                      @OA\Property(property="active", type="bool")
+     *                  ),
+     *              ),
+     *              @OA\Property(property="next_page_url", type="string"),
+     *              @OA\Property(property="path", type="string"),
+     *              @OA\Property(property="per_page", type="integer"),
+     *              @OA\Property(property="prev_page_url", type="string"),
+     *              @OA\Property(property="to", type="integer"),
+     *              @OA\Property(property="total", type="integer"),
+     *          )
+     *       )
+     *     )
+     */
     public function index(Request $request)
     {
         $templateQuery = Template::orderBy('name');
@@ -59,6 +138,43 @@ class TemplateController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *      path="/templates",
+     *      operationId="createTemplates",
+     *      tags={"Templates"},
+     *      description="Creates new template",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Pass user credentials",
+     *          @OA\JsonContent(
+     *              required={"name","style","direction","color_from","color_to","color_format"},
+     *              @OA\Property(property="name", type="string", example="Template 1"),
+     *              @OA\Property(property="style", type="GradientStyle", example="Linear"),
+     *              @OA\Property(property="direction", type="GradientDirection", example="Top"),
+     *              @OA\Property(property="color_from", type="string"),
+     *              @OA\Property(property="color_to", type="string"),
+     *              @OA\Property(property="color_format", type="ColorFormat", example="Rgb")
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Invalid data."
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id", type="integer"),
+     *              @OA\Property(property="name", type="string"),
+     *              @OA\Property(property="style", type="GradientStyle"),
+     *              @OA\Property(property="direction", type="GradientDirection"),
+     *              @OA\Property(property="color_from", type="string"),
+     *              @OA\Property(property="color_to", type="string"),
+     *          )
+     *       )
+     *     )
      */
     public function store(Request $request)
     {

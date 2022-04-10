@@ -15,6 +15,18 @@ class DirectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/directions",
+     *      operationId="getGradientDirections",
+     *      tags={"Gradient directions"},
+     *      description="Returns list of gradient directions",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     *     )
+     */
     public function index()
     {
         return $this->successResponse(GradientDirection::asArray());

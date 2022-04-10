@@ -15,6 +15,18 @@ class StyleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/styles",
+     *      operationId="getGradientStyles",
+     *      tags={"Gradient styles"},
+     *      description="Returns list of gradient styles",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     *     )
+     */
     public function index()
     {
         return $this->successResponse(GradientStyle::asArray());
