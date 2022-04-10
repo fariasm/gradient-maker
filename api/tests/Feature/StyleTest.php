@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\GradientStyle;
 use App\Enums\StyleEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,6 +14,6 @@ class StyleTest extends TestCase
     {
         $this->json('get', 'api/styles')
             ->assertStatus(200)
-            ->assertJson(StyleEnum::values());
+            ->assertJson(GradientStyle::asArray());
     }
 }

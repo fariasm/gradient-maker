@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\DirectionEnum;
+use App\Enums\GradientDirection;
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 
 class DirectionController extends Controller
 {
@@ -17,7 +16,6 @@ class DirectionController extends Controller
      */
     public function index()
     {
-        //
-        return $this->successResponse(DirectionEnum::values());
+        return $this->successResponse(GradientDirection::asArray());
     }
 }

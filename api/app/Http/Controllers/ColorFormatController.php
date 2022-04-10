@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\GradientStyle;
+use App\Enums\ColorFormat;
 use App\Traits\ApiResponser;
 
-class StyleController extends Controller
+class ColorFormatController extends Controller
 {
     use ApiResponser;
 
@@ -16,6 +16,6 @@ class StyleController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(GradientStyle::asArray());
+        return $this->successResponse(ColorFormat::asArray());
     }
 }
