@@ -197,9 +197,11 @@ class TemplateTest extends TestCase
         $this->json('post', 'api/templates', $this->getValidHexData());
         $this->json('post', 'api/templates', $this->getValidRgbData());
         $this->json('post', 'api/templates', $this->getValidRgbData());
-        $this->json('get', 'api/templates')
-            ->assertStatus(200)
-            ->assertJsonCount(4);
+
+        $response = $this->json('get', 'api/templates');
+        $response->assertStatus(200)
+            ->assertJsonStructure($this->getPaginationStructure());
+        $this->assertTrue(count($response['data']) == 4);
     }
 
     public function test_filter_templates_by_name()
@@ -212,14 +214,15 @@ class TemplateTest extends TestCase
         $template1 = $this->getValidHexData();
         $template1['name'] = 'search this template1';
         $this->json('post', 'api/templates', $template1);
-        
+
         $template2 = $this->getValidRgbData();
         $template2['name'] = 'search this template2';
         $this->json('post', 'api/templates', $template2);
 
-        $this->json('get', 'api/templates?name=search')
-            ->assertStatus(200)
-            ->assertJsonCount(2);
+        $response = $this->json('get', 'api/templates?name=search');
+        $response->assertStatus(200)
+            ->assertJsonStructure($this->getPaginationStructure());
+        $this->assertTrue(count($response['data']) == 2);
     }
 
     public function test_filter_templates_by_style()
@@ -239,9 +242,10 @@ class TemplateTest extends TestCase
         $template3['style'] = $radialKey;
         $this->json('post', 'api/templates', $template3);
         
-        $this->json('get', 'api/templates?style='.$linearKey)
-            ->assertStatus(200)
-            ->assertJsonCount(2);
+        $response = $this->json('get', 'api/templates?style='.$linearKey);
+        $response->assertStatus(200)
+            ->assertJsonStructure($this->getPaginationStructure());
+        $this->assertTrue(count($response['data']) == 2);
     }
 
     public function test_filter_templates_by_direction()
@@ -261,9 +265,23 @@ class TemplateTest extends TestCase
         $template3['direction'] = $bottomLeftGradientKey;
         $this->json('post', 'api/templates', $template3)->assertStatus(200);
         
-        $this->json('get', 'api/templates?direction='.$bottomLeftGradientKey)
-            ->assertStatus(200)
-            ->assertJsonCount(1);
+        $response = $this->json('get', 'api/templates?direction='.$bottomLeftGradientKey);
+        $response->assertStatus(200)
+            ->assertJsonStructure($this->getPaginationStructure());
+        $this->assertTrue(count($response['data']) == 1);
+    }
+
+    public function test_get_paginated_templates_with_page_size()
+    {
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidHexData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+        $this->json('post', 'api/templates', $this->getValidRgbData());
+
+        $response = $this->json('get', 'api/templates?page=2&page_size=3');
+        $response->assertStatus(200)
+            ->assertJsonStructure($this->getPaginationStructure());
+        $this->assertTrue(count($response['data']) == 1);
     }
 
     private function getValidHexData()
@@ -287,6 +305,25 @@ class TemplateTest extends TestCase
             'color_from' => 'rgb(255, 153, 51)',
             'color_to' => 'rgb(51, 255, 51)',
             'color_format' => ColorFormat::getKey(ColorFormat::Rgb)
+        ];
+    }
+
+    private function getPaginationStructure()
+    {
+        return [
+            'current_page',
+            'data',
+            'first_page_url',
+            'from',
+            'last_page',
+            'last_page_url',
+            'links',
+            'next_page_url',
+            'path',
+            'per_page',
+            'prev_page_url',
+            'to',
+            'total'
         ];
     }
 }

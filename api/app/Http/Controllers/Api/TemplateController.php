@@ -17,6 +17,9 @@ class TemplateController extends Controller
 {
     use ApiResponser;
 
+    private $pageSizeLimit = 200;
+    private $defaultPageSize = 50;
+
     /**
      * Display a listing of the resource.
      *
@@ -37,8 +40,18 @@ class TemplateController extends Controller
         {
             $templateQuery = $templateQuery->where('direction', $request->direction);
         }
-        $templates = $templateQuery->get();
+        $templates = $templateQuery->paginate($this->getPageSize($request));
         return $this->successResponse($templates);
+    }
+
+    private function getPageSize($request)
+    {
+        $pageSize = $this->defaultPageSize;
+        if($request->has('page_size'))
+        {
+            $pageSize = $request->page_size<$this->pageSizeLimit?$request->page_size:$this->pageSizeLimit;
+        }
+        return $pageSize;
     }
 
     /**
