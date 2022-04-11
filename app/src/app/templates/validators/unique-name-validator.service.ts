@@ -20,9 +20,7 @@ export class UniqueNameValidatorService implements AsyncValidator {
       .pipe(
         delay(1000),
         map( res => {
-          return ( res.length === 0) 
-            ? null
-            : { nameExists: true }
+          return { nameExists: true }
         }),
         catchError(() => of(null))
       );

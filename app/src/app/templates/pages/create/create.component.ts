@@ -17,8 +17,10 @@ import { UniqueNameValidatorService } from '../../validators/unique-name-validat
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
-  colorFrom = "#ff0000";
-  colorTo = "#0700ff";
+  defaultColorFrom = "#7500ff";
+  colorFrom = this.defaultColorFrom;
+  defaultColorTo = "#ff0099";
+  colorTo = this.defaultColorTo;
   outputFormat = "Hex";
 
   styles!:any;
@@ -138,5 +140,17 @@ export class CreateComponent implements OnInit {
         return r+", "+g+", "+b;
     } 
     return null;
+  }
+
+  resetTemplateForm() {
+    this.createTemplateForm.controls['style'].setValue(this.defaultStyle);
+    this.createTemplateForm.controls['direction'].setValue(this.defaultDirection);
+    this.createTemplateForm.controls['colorFormat'].setValue(this.defaultColorFormat);
+    this.createTemplateForm.controls['name'].reset();
+    this.colorFrom = this.defaultColorFrom;
+    this.colorTo = this.defaultColorTo;
+    this.showTemplateCreatedMessage = false;
+    this.updateCss();
+    return false;
   }
 }
