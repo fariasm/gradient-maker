@@ -31,7 +31,6 @@ export class TemplateService {
       color_from: colorFrom,
       color_to: colorTo
     };
-    console.log(body);
     return this.http.post<Template>(url, body);
   }
 }

@@ -10,6 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Template } from '../../interfaces/template';
 import { TemplateService } from '../../services/template.service';
 import { UniqueNameValidatorService } from '../../validators/unique-name-validator.service';
+import { faCheck, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { ClipboardService } from 'ngx-clipboard';
+import { CssGradientPipe } from '../../pipes/css-gradient.pipe';
 
 @Component({
   selector: 'app-create',
@@ -38,11 +41,18 @@ export class CreateComponent implements OnInit {
   submittingForm = false;
   showTemplateCreatedMessage = false;
 
+  faClipboard = faClipboard;
+  faCheck = faCheck;
+  
+  copiedToClipboard = false;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private templateService: TemplateService,
-    private uniqueNameValidator: UniqueNameValidatorService
+    private uniqueNameValidator: UniqueNameValidatorService,
+    private clipboardApi: ClipboardService,
+    private cssGradientPipe: CssGradientPipe
   ) {
   }
 
@@ -152,5 +162,13 @@ export class CreateComponent implements OnInit {
     this.showTemplateCreatedMessage = false;
     this.updateCss();
     return false;
+  }
+
+  copyTemplateCssToClipboard() {
+    this.copiedToClipboard = true;
+    this.clipboardApi.copyFromContent(this.cssGradientPipe.transform(this.currentTemplate) as string);
+    setTimeout(() => {
+        this.copiedToClipboard = false;
+    }, 1000);
   }
 }

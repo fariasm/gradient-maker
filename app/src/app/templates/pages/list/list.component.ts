@@ -9,9 +9,14 @@ import { Template } from '../../interfaces/template';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  constructor() { }
+  templates!: Template[];
+  
+  constructor( private templateService: TemplateService ) { }
 
   ngOnInit(): void {
+
+    this.templateService.getTemplates()
+      .subscribe( templatesPagination => this.templates = templatesPagination.data );
 
   }
 

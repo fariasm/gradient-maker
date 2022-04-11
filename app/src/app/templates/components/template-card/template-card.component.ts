@@ -14,7 +14,6 @@ export class TemplateCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.template);
   }
 
 }
