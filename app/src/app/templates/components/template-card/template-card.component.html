@@ -2,13 +2,15 @@
     <div id="gradient" [style]="template | cssGradient"></div>
     <div class="card-body">
       <h5 class="card-title">{{ template.name }}</h5>
-      <div class="gradient-css rounded p-3 mb-3">
+      <div class="gradient-css rounded p-3">
         <p class="card-text">
           <small>{{template | cssGradient }}</small>
         </p>
       </div>
+    </div>
+    <div class="card-footer">
       <div class="d-grid">
         <button (click)="copyTemplateCssToClipboard()" class="btn btn-outline-primary">{{ copyText }}</button>
-      </div>      
-    </div>
+      </div>    
+    </div>  
   </div>
