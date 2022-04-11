@@ -274,6 +274,33 @@
                     }
                 }
             }
+        },
+        "/templates/exists/{name}": {
+            "get": {
+                "tags": [
+                    "Templates"
+                ],
+                "description": "Returns 200 HTTP code if template exists",
+                "operationId": "checkIfExists",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Name to search",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template exists"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    }
+                }
+            }
         }
     }
 }

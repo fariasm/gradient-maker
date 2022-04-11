@@ -25,4 +25,5 @@ Route::group([
     Route::get('color-formats', [ColorFormatController::class, 'index']);
     Route::post('templates', [TemplateController::class, 'store']);
     Route::get('templates', [TemplateController::class, 'index']);
+    Route::get('templates/exists/{name}', [TemplateController::class, 'exists']);
 });
