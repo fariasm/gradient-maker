@@ -44,7 +44,7 @@ ng serve -o
 
 API specification was build with [darkaonline/l5-swagger](https://github.com/DarkaOnLine/L5-Swagger), a Swagger integration package for Laravel.
 
-You can access to documentation at: `https://localhost:{api_port}/api/docs`
+You can access to documentation at: `http://localhost:{api_port}/api/docs`
 
 ## Continuous integration
 
