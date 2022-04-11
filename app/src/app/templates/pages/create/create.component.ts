@@ -50,7 +50,7 @@ export class CreateComponent implements OnInit {
     this.colorFormats = this.route.snapshot.data.colorFormats; 
 
     this.createTemplateForm = this.fb.group({
-      name: ['', [Validators.required], [this.uniqueNameValidator]],
+      name: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)], [this.uniqueNameValidator]],
       style: [this.defaultStyle, Validators.required],
       direction: [this.defaultDirection, Validators.required],
       colorFormat: [this.defaultColorFormat, Validators.required],
@@ -76,6 +76,10 @@ export class CreateComponent implements OnInit {
       errorMessage = 'Template name is required.'; 
     } else if(errors?.nameExists) {
       errorMessage = 'Template name already exists.';
+    } else if(errors?.minlength) {
+      errorMessage = 'Template name must be at least 6 characters.'; 
+    } else if(errors?.maxlength) {
+      errorMessage = 'Maximum name length is 50 characters.'; 
     }
     return errorMessage;
   }

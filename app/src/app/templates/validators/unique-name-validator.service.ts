@@ -16,11 +16,7 @@ export class UniqueNameValidatorService implements AsyncValidator {
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     const name = control.value;
     const url = `${ this.baseUrl }templates/exists/${ name }`;
-    return this.http.get<any[]>(url, {
-      params: {
-        name: name
-      }
-    })
+    return this.http.get<any[]>(url)
       .pipe(
         delay(1000),
         map( res => {
