@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Template } from '../../interfaces/template';
-import { GradientStyle } from '../../shared/enums/gradient-style';
-import { GradientDirection } from '../../shared/enums/gradient-direction';
+import { ClipboardService } from 'ngx-clipboard';
+import { CssGradientPipe } from '../../pipes/css-gradient.pipe';
 
 @Component({
   selector: 'app-template-card',
@@ -11,9 +11,23 @@ import { GradientDirection } from '../../shared/enums/gradient-direction';
 export class TemplateCardComponent implements OnInit {
   @Input() template!: Template;
 
-  constructor() { }
+  defaultCopyText = "Copy CSS to clipboard";
+  copyText = this.defaultCopyText;
+
+  constructor(
+    private clipboardApi: ClipboardService,
+    private cssGradientPipe: CssGradientPipe
+    ) { }
 
   ngOnInit(): void {
+  }
+
+  copyTemplateCssToClipboard() {
+    this.copyText = "Copied!";
+    this.clipboardApi.copyFromContent(this.cssGradientPipe.transform(this.template) as string);
+    setTimeout(() => {
+      this.copyText =this.defaultCopyText;
+  }, 1000);
   }
 
 }
