@@ -1,1 +1,11 @@
-<p>template-card works!</p>
+<div class="card h-100">
+    <div id="gradient" [style]="template | cssGradient"></div>
+    <div class="card-body">
+      <h5 class="card-title">{{ template.name }}</h5>
+      <p class="card-text fs-6">
+        <code>
+            <small>{{template | cssGradient }}</small>
+        </code>
+      </p>      
+    </div>
+  </div>
