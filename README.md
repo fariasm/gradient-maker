@@ -23,16 +23,11 @@ docker-compose up -d --build
 
 API specification was build with [darkaonline/l5-swagger](https://github.com/DarkaOnLine/L5-Swagger), a Swagger integration package for Laravel.
 
-You can access to documentation at:
-
-https://localhost:{api_port}/api/docs
+You can access to documentation at: `https://localhost:{api_port}/api/docs`
 
 ## Continuous integration
 
 [ci-laravel.yml](.github/workflows/ci-laravel.yml) define the jobs needed to perform unit testing and allow push to main branch only if all tests succeed.
-
-## Especificación de la API
-Las rutas de la API generadas con Laravel son las siguientes:
 
 
 
