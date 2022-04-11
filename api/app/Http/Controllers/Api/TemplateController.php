@@ -219,4 +219,37 @@ class TemplateController extends Controller
 
         return $this->successResponse($template->toArray());
     }
+
+    /**
+     * @OA\Get(
+    *      path="/templates/exists/{name}",
+    *      operationId="checkIfExists",
+    *      tags={"Templates"},
+    *      description="Returns 200 HTTP code if template exists",
+    *      @OA\Parameter(
+     *          name="name",
+     *          description="Name to search",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Template exists"
+    *       ),
+    *       @OA\Response(
+    *          response=404,
+    *          description="Template not found"
+    *       )
+    *     )
+    */
+    public function exists($name) {
+        $template = Template::firstWhere('name', $name);
+        if(is_null($template)) {
+            return $this->errorResponse(['message' => 'Template not found.'], 404);
+        } else {
+            return $this->successResponse();
+        }
+    }
 }
