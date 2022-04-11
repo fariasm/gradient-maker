@@ -286,6 +286,21 @@ class TemplateTest extends TestCase
         $this->assertTrue(count($response['data']) == 1);
     }
 
+    public function test_template_not_found()
+    {
+        $this->json('get', $this->templatesUrl.'/exists/templatename')
+            ->assertStatus(404);
+    }
+
+    public function test_exists_template_name()
+    {
+        $template = $this->getValidHexData();
+        $template['name'] = 'templatename';
+        $this->json('post', $this->templatesUrl, $template);
+        $this->json('get', $this->templatesUrl.'/exists/templatename')
+            ->assertStatus(200);
+    }
+
     private function getValidHexData()
     {
         return [
