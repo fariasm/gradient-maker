@@ -13,10 +13,31 @@ The installation tool kit include:
 
 You can deploy locally using docker compose command in repository root folder.
 
-Clone this repo and run:
+Clone this repo and follow these steps:
+
+1. Run docker compose up command:
 
 ```sh
 docker-compose up -d --build
+```
+
+2. Run composer install inside api container:
+
+```sh
+docker-compose exec api composer install
+```
+
+3. Run npm update inside app folder:
+
+```sh
+cd app;
+npm update;
+```
+
+4. Finally, serve Angular application.
+
+```sh
+ng serve -o
 ```
 
 ## API documentation
