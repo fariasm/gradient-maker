@@ -9,11 +9,18 @@ import { GradientStyle } from '../shared/enums/gradient-style';
 export class CssGradientPipe implements PipeTransform {
 
   transform(value: Template, ...args: unknown[]): unknown {
-    const colorFrom = value.color_from;
-    const colorTo = value.color_to;
-    const direction = GradientDirection[value.direction as keyof typeof GradientDirection];
-    const style = GradientStyle[value.style as keyof typeof GradientStyle];
-    return `background-image: ${style}-gradient(to ${direction}, ${colorFrom}, ${colorTo});`;
+    if(value) {
+      const colorFrom = value.color_from;
+      const colorTo = value.color_to;
+      const direction = GradientDirection[value.direction as keyof typeof GradientDirection];
+      if(value.style.toLowerCase()==GradientStyle.Linear.toLowerCase()) {
+        return `background: linear-gradient(to ${direction}, ${colorFrom}, ${colorTo});`;
+      } else {
+        return `background: -webkit-radial-gradient(${direction}, ${colorFrom}, ${colorTo});`;
+      }      
+    }
+    return '';
   }
 
 }
+

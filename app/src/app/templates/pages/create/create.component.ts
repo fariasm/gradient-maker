@@ -1,4 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { GradientStyleService } from '../../services/gradient-style.service';
+import { GradientDirectionService } from '../../services/gradient-direction.service';
+import { ColorFormatService } from '../../services/color-format.service';
+import { GradientStyle } from '../../shared/enums/gradient-style';
+import { GradientDirection } from '../../shared/enums/gradient-direction';
+import { ColorFormat } from '../../shared/enums/color-format';
+import { ActivatedRoute } from '@angular/router';
+import { Template } from '../../interfaces/template';
+import { TemplateService } from '../../services/template.service';
+import { UniqueNameValidatorService } from '../../validators/unique-name-validator.service';
 
 @Component({
   selector: 'app-create',
@@ -6,10 +17,122 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
+  colorFrom = "#ff0000";
+  colorTo = "#0700ff";
+  outputFormat = "Hex";
 
-  constructor() { }
+  styles!:any;
+  directions!:any;
+  colorFormats!:any;
 
-  ngOnInit(): void {
+  defaultStyle = 'Linear';
+  defaultDirection = "Top";
+  defaultColorFormat = "Hex";
+
+  currentTemplate!: Template;
+
+  createTemplateForm!: FormGroup;
+
+  submittingForm = false;
+  showTemplateCreatedMessage = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private templateService: TemplateService,
+    private uniqueNameValidator: UniqueNameValidatorService
+  ) {
   }
 
+  ngOnInit(): void {
+    this.styles = this.route.snapshot.data.styles; 
+    this.directions = this.route.snapshot.data.directions; 
+    this.colorFormats = this.route.snapshot.data.colorFormats; 
+
+    this.createTemplateForm = this.fb.group({
+      name: ['', [Validators.required], [this.uniqueNameValidator]],
+      style: [this.defaultStyle, Validators.required],
+      direction: [this.defaultDirection, Validators.required],
+      colorFormat: [this.defaultColorFormat, Validators.required],
+      colorFrom: [this.colorFrom, Validators.required],
+      colorTo: [this.colorTo, Validators.required]
+    });
+
+    this.updateCss();
+
+    this.createTemplateForm.valueChanges.subscribe(val => {
+      this.updateCss();
+    });
+  }
+
+  validName() {
+    return this.createTemplateForm.controls['name'].errors && this.createTemplateForm.controls['name'].touched;
+  }
+
+  get nameErrorMessage(): string {
+    let errorMessage: string = '';
+    const errors = this.createTemplateForm.get('name')?.errors;
+    if(errors?.required) {
+      errorMessage = 'Template name is required.'; 
+    } else if(errors?.nameExists) {
+      errorMessage = 'Template name already exists.';
+    }
+    return errorMessage;
+  }
+
+  createTemplate() {
+    this.showTemplateCreatedMessage = false;
+    this.submittingForm = true;
+    if(this.createTemplateForm.invalid) {
+      this.createTemplateForm.markAllAsTouched();
+      this.submittingForm = false;
+    } else {
+      const { style, direction, colorFormat, name } = this.createTemplateForm.value;
+      this.templateService.getTemplates(name)
+        .subscribe(
+          response => {
+            this.templateService.create(
+              name, 
+              style, 
+              direction, 
+              colorFormat, 
+              this.parseColor(colorFormat, this.colorFrom), 
+              this.parseColor(colorFormat, this.colorTo), 
+            ).subscribe(
+              template => {
+                this.showTemplateCreatedMessage = true;
+                this.submittingForm = false;
+              }
+            );
+          }
+        );
+    }    
+  }
+
+  updateCss() {
+    this.currentTemplate = {
+      style: this.createTemplateForm.controls['style'].value,
+      direction: this.createTemplateForm.controls['direction'].value,
+      color_from: this.parseColor(this.createTemplateForm.controls['colorFormat'].value, this.colorFrom),
+      color_to: this.parseColor(this.createTemplateForm.controls['colorFormat'].value, this.colorTo),
+    } as Template;
+  }
+
+  parseColor(format: string, hexColor: string) {
+    if(format==ColorFormat.Rgb) {
+      return `rgb(${this.hexToRgb(hexColor)})`;
+    }
+    return hexColor;
+  }
+
+  hexToRgb(hex:string) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if(result){
+        var r= parseInt(result[1], 16);
+        var g= parseInt(result[2], 16);
+        var b= parseInt(result[3], 16);
+        return r+", "+g+", "+b;
+    } 
+    return null;
+  }
 }

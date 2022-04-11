@@ -9,6 +9,7 @@ import { SearchTemplatesComponent } from './components/search-templates/search-t
 import { ReactiveFormsModule } from '@angular/forms';
 import { TemplatesListComponent } from './components/templates-list/templates-list.component';
 import { CreateComponent } from './pages/create/create.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CreateComponent } from './pages/create/create.component';
   imports: [
     CommonModule,
     TemplatesRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ColorPickerModule
   ]
 })
 export class TemplatesModule { }

@@ -4,7 +4,7 @@ export enum GradientDirection {
     Right = 'right',
     BottomRight = 'bottom right',
     Bottom = 'bottom',
-    BottomLeft = 'bottom-left',
+    BottomLeft = 'bottom left',
     Left = 'Left',
     TopLeft = 'top left'
 }
