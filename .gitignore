@@ -4,7 +4,6 @@
 /api/public/storage
 /api/storage/*.key
 /api/vendor
-api/.env
 api/.env.backup
 api/.phpunit.result.cache
 api/docker-compose.override.yml

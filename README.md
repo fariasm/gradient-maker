@@ -7,7 +7,7 @@ Backend was developed with Laravel, use MySQL as database software and frontend 
 ## Installation
 The installation tool kit include:
 
-- Nginx web server for both API and web application.
+- Nginx web server for API.
 - MySQL used for templates database.
 - phpMyAdmin interface to connect to your MySQL database.
 
