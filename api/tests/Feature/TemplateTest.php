@@ -13,7 +13,7 @@ class TemplateTest extends TestCase
     use RefreshDatabase;
 
     private $templatesUrl = 'api/v1/templates';
-    
+
     public function test_required_data()
     {
         $this->json('post', $this->templatesUrl)
@@ -68,7 +68,7 @@ class TemplateTest extends TestCase
                 ]
             ]);
     }
-    
+
     public function test_invalid_style()
     {
         $data = $this->getValidHexData();
@@ -243,7 +243,7 @@ class TemplateTest extends TestCase
         $template3 = $this->getValidHexData();
         $template3['style'] = $radialKey;
         $this->json('post', $this->templatesUrl, $template3);
-        
+
         $response = $this->json('get', $this->templatesUrl.'?style='.$linearKey);
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());
@@ -266,7 +266,7 @@ class TemplateTest extends TestCase
         $template3 = $this->getValidHexData();
         $template3['direction'] = $bottomLeftGradientKey;
         $this->json('post', $this->templatesUrl, $template3)->assertStatus(200);
-        
+
         $response = $this->json('get', $this->templatesUrl.'?direction='.$bottomLeftGradientKey);
         $response->assertStatus(200)
             ->assertJsonStructure($this->getPaginationStructure());

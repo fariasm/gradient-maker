@@ -107,16 +107,13 @@ class TemplateController extends Controller
     public function index(Request $request)
     {
         $templateQuery = Template::orderBy('name');
-        if($request->has('name'))
-        {
+        if ($request->has('name')) {
             $templateQuery = $templateQuery->where('name', 'like', '%'.$request->name.'%');
         }
-        if($request->has('style'))
-        {
+        if ($request->has('style')) {
             $templateQuery = $templateQuery->where('style', $request->style);
         }
-        if($request->has('direction'))
-        {
+        if ($request->has('direction')) {
             $templateQuery = $templateQuery->where('direction', $request->direction);
         }
         $templates = $templateQuery->paginate($this->getPageSize($request));
@@ -126,9 +123,8 @@ class TemplateController extends Controller
     private function getPageSize($request)
     {
         $pageSize = $this->defaultPageSize;
-        if($request->has('page_size'))
-        {
-            $pageSize = $request->page_size<$this->pageSizeLimit?$request->page_size:$this->pageSizeLimit;
+        if ($request->has('page_size')) {
+            $pageSize = $request->page_size<$this->pageSizeLimit ? $request->page_size : $this->pageSizeLimit;
         }
         return $pageSize;
     }
@@ -179,7 +175,7 @@ class TemplateController extends Controller
     public function store(Request $request)
     {
         $data = $request->only('name', 'style', 'direction', 'color_from', 'color_to', 'color_format');
-        $colorFormat = array_key_exists('color_format', $data)?$data['color_format']:null;
+        $colorFormat = array_key_exists('color_format', $data) ? $data['color_format'] : null;
         $validator = Validator::make($data, [
             'name' => 'required|min:6|max:50|unique:templates',
             'style' => [
@@ -204,8 +200,7 @@ class TemplateController extends Controller
             ],
         ]);
 
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return $this->errorResponse($validator->messages(), 400);
         }
 
@@ -244,9 +239,10 @@ class TemplateController extends Controller
     *       )
     *     )
     */
-    public function exists($name) {
+    public function exists($name)
+    {
         $template = Template::firstWhere('name', $name);
-        if(is_null($template)) {
+        if (is_null($template)) {
             return $this->errorResponse(['message' => 'Template not found.'], 404);
         } else {
             return $this->successResponse();

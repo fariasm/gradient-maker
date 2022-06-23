@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'v1'
-], function() {
+], function () {
     Route::get('styles', [StyleController::class, 'index']);
     Route::get('directions', [DirectionController::class, 'index']);
     Route::get('color-formats', [ColorFormatController::class, 'index']);

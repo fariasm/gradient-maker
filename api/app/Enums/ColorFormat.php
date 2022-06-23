@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class ColorFormat extends Enum
 {
-    const Hex = 'Hex';
-    const Rgb = 'Rgb';
+    public const Hex = 'Hex';
+    public const Rgb = 'Rgb';
 }

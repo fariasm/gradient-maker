@@ -16,12 +16,12 @@ use BenSampo\Enum\Enum;
  */
 final class GradientDirection extends Enum
 {
-    const Top = 'Top';
-    const TopRight = 'Top right';
-    const Right = 'Right';
-    const BottomRight = 'Bottom right';
-    const Bottom = 'Bottom';
-    const BottomLeft = 'Bottom left';
-    const Left = 'Left';
-    const TopLeft = 'Top left';
+    public const Top = 'Top';
+    public const TopRight = 'Top right';
+    public const Right = 'Right';
+    public const BottomRight = 'Bottom right';
+    public const Bottom = 'Bottom';
+    public const BottomLeft = 'Bottom left';
+    public const Left = 'Left';
+    public const TopLeft = 'Top left';
 }

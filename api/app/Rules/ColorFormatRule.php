@@ -3,13 +3,12 @@
 namespace App\Rules;
 
 use App\Enums\ColorFormat;
-use Faker\Core\Color;
 use Illuminate\Contracts\Validation\Rule;
 
 class ColorFormatRule implements Rule
-{   
-    const HEX_REGEX = '/#([a-f0-9]{3}){1,2}\b/';
-    const RGB_REGEX = '/rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)/';
+{
+    public const HEX_REGEX = '/#([a-f0-9]{3}){1,2}\b/';
+    public const RGB_REGEX = '/rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)/';
 
     private $colorFormat = null;
 
@@ -33,12 +32,10 @@ class ColorFormatRule implements Rule
     public function passes($attribute, $value)
     {
         $result = false;
-        if($this->colorFormat == ColorFormat::Hex)
-        {
+        if ($this->colorFormat == ColorFormat::Hex) {
             $result = preg_match(self::HEX_REGEX, $value) == 1;
         }
-        if($this->colorFormat == ColorFormat::Rgb)
-        {
+        if ($this->colorFormat == ColorFormat::Rgb) {
             $result = preg_match(self::RGB_REGEX, $value) == 1;
         }
         return $result;

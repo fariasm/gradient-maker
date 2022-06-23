@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class GradientStyle extends Enum
 {
-    const Linear = 'Linear';
-    const Radial = 'Radial';
+    public const Linear = 'Linear';
+    public const Radial = 'Radial';
 }
